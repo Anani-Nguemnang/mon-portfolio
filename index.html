@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NZOUPET NGUEMNANG Harry Anani — Portfolio</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ── Loader ────────────────────────────────────────────────── -->
+  <div id="loader">
+    <div class="loader-content">
+      <div class="loader-logo">
+        <span class="loader-initials">HA</span>
+        <div class="loader-ring loader-ring-1"></div>
+        <div class="loader-ring loader-ring-2"></div>
+        <div class="loader-glow"></div>
+      </div>
+      <div class="loader-name">NZOUPET NGUEMNANG <span>Harry Anani</span></div>
+      <div class="loader-bar-track">
+        <div class="loader-bar-fill" id="loaderBar"></div>
+      </div>
+      <div class="loader-percent" id="loaderPercent">0%</div>
+    </div>
+  </div>
+
+  <!-- ── Navigation ─────────────────────────────────────────── -->
+  <nav id="navbar">
+    <div class="nav-container">
+      <a href="#hero" class="nav-logo">
+        <span class="logo-icon">
+          <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#7c3aed"/>
+                <stop offset="100%" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+            <rect x="3" y="3" width="34" height="34" rx="10" fill="url(#logoGrad)" opacity="0.18"/>
+            <rect x="3" y="3" width="34" height="34" rx="10" fill="none" stroke="url(#logoGrad)" stroke-width="1.8"/>
+            <path d="M13 12 L13 28 M13 12 L21 12 Q26 12 26 17 Q26 22 21 22 L13 22"
+                  stroke="url(#logoGrad)" stroke-width="2.8" fill="none"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="29" cy="28" r="2" fill="#06b6d4"/>
+          </svg>
+        </span>
+        <span class="logo-text">
+          <span class="logo-port">Port</span><span class="logo-folio">folio</span>
+        </span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#about">À propos</a></li>
+        <li><a href="#education">Formation</a></li>
+        <li><a href="#skills">Compétences</a></li>
+        <li><a href="#projects">Projets</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── Hero ───────────────────────────────────────────────── -->
+  <section id="hero">
+    <!-- Arrière-plan global avec points -->
+    <div class="hero-bg">
+      <div class="hero-dots"></div>
+    </div>
+
+    <div class="hero-inner">
+
+      <!-- Colonne gauche : texte -->
+      <div class="hero-content">
+        <p class="hero-greeting">Bonjour, je suis</p>
+        <h1 class="hero-name">NZOUPET NGUEMNANG<br /><span>Harry Anani</span></h1>
+        <p class="hero-title">
+          <span class="typed" id="typedText"></span><span class="cursor">|</span>
+        </p>
+        <p class="hero-desc">
+          Étudiant passionné par le développement logiciel, les bases de données,
+          la création d'applications robustes et la cybersécurité.
+        </p>
+        <div class="hero-cta">
+          <a href="#projects" class="btn btn-primary">Voir mes projets</a>
+          <a href="#contact" class="btn btn-outline">Me contacter</a>
+        </div>
+      </div>
+
+      <!-- Colonne droite : photo VR -->
+      <div class="hero-visual">
+        <!-- Halos lumineux -->
+        <div class="hero-glow hero-glow-1"></div>
+        <div class="hero-glow hero-glow-2"></div>
+        <!-- Cadre photo -->
+        <div class="hero-img-frame">
+          <img src="images/hero-bg.jpg" alt="Harry Anani — Vision tech" class="hero-img" />
+          <!-- Overlay dégradé intérieur -->
+          <div class="hero-img-overlay"></div>
+        </div>
+        <!-- Cercles décoratifs -->
+        <div class="hero-ring hero-ring-1"></div>
+        <div class="hero-ring hero-ring-2"></div>
+      </div>
+
+    </div>
+
+    <div class="hero-scroll">
+      <span>Défiler</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ── À propos ───────────────────────────────────────────── -->
+  <section id="about">
+    <div class="container">
+      <h2 class="section-title">À <span>propos</span></h2>
+      <div class="about-grid">
+        <div class="about-avatar">
+          <div class="avatar-img-wrapper">
+            <img src="images/profile.jpg" alt="NZOUPET NGUEMNANG Harry Anani" class="avatar-img" />
+          </div>
+          <div class="avatar-badge">Disponible</div>
+        </div>
+        <div class="about-text">
+          <p>
+            Je suis <strong>NZOUPET NGUEMNANG Harry Anani</strong>, étudiant en
+            1ère année de <strong>Génie Informatique</strong> à
+            <strong>l'Institut Universitaire des Technologies de Douala</strong>.
+            Passionné par le développement d'applications, je maîtrise Python,
+            les bases de données (MongoDB, SQLite, SQL), la conception
+            d'interfaces graphiques et les bases de la cybersécurité.
+          </p>
+          <p>
+            J'aime résoudre des problèmes concrets à travers le code et créer
+            des outils utiles qui facilitent la gestion et l'organisation de
+            données. J'ai également un petit faible pour la sécurisation des
+            réseaux et des logiciels.
+          </p>
+          <div class="about-info">
+            <div class="info-item">
+              <span class="info-label">Email</span>
+              <span class="info-value">ananinguemnang@gmail.com</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Localisation</span>
+              <span class="info-value">Douala, Cameroun</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Statut</span>
+              <span class="info-value">Étudiant · Futur analyste en cybersécurité</span>
+            </div>
+          </div>
+        </div>
+        <div class="about-banner">
+          <img src="images/about.jpg" alt="Harry Anani - Passionné de tech" class="about-banner-img" />
+          <div class="about-banner-overlay">
+            <span>Curieux · Innovant · Déterminé</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Formation ────────────────────────────────────────────── -->
+  <section id="education">
+    <div class="container">
+      <h2 class="section-title">Ma <span>Formation</span></h2>
+      <div class="timeline">
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">2025</div>
+          <div class="timeline-card">
+            <div class="timeline-badge">🎓 Baccalauréat</div>
+            <h3>Baccalauréat série C</h3>
+            <p class="timeline-school">
+              <span class="tl-icon">🏫</span> Collège la Conquête
+            </p>
+            <p class="timeline-desc">
+              Diplôme de fin d'études secondaires — série scientifique axée
+              sur les mathématiques et les sciences physiques.
+            </p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">2024</div>
+          <div class="timeline-card">
+            <div class="timeline-badge">📋 Probatoire</div>
+            <h3>Probatoire série C</h3>
+            <p class="timeline-school">
+              <span class="tl-icon">🏫</span> Collège la Conquête
+            </p>
+            <p class="timeline-desc">
+              Examen intermédiaire du second cycle secondaire — validation
+              des acquis scientifiques de la première.
+            </p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">2022</div>
+          <div class="timeline-card">
+            <div class="timeline-badge">📜 BEPC</div>
+            <h3>Brevet d'Études du Premier Cycle (BEPC)</h3>
+            <p class="timeline-school">
+              <span class="tl-icon">🏫</span> Collège la Conquête
+            </p>
+            <p class="timeline-desc">
+              Diplôme de fin du premier cycle de l'enseignement secondaire,
+              sanctionnant les études collégiales.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Compétences ────────────────────────────────────────── -->
+  <section id="skills">
+    <div class="container">
+      <h2 class="section-title">Mes <span>Compétences</span></h2>
+      <div class="skills-grid">
+
+        <div class="skill-category">
+          <h3><span class="cat-icon">⚡</span> Langages</h3>
+          <div class="skill-list">
+            <div class="skill-item">
+              <div class="skill-header"><span>Python</span><span>85%</span></div>
+              <div class="skill-bar"><div class="skill-fill" data-width="85"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-header"><span>SQL</span><span>80%</span></div>
+              <div class="skill-bar"><div class="skill-fill" data-width="80"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-header"><span>HTML / CSS</span><span>75%</span></div>
+              <div class="skill-bar"><div class="skill-fill" data-width="75"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-header"><span>JavaScript</span><span>60%</span></div>
+              <div class="skill-bar"><div class="skill-fill" data-width="60"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="skill-category">
+          <h3><span class="cat-icon">🗄️</span> Bases de données</h3>
+          <div class="skill-list">
+            <div class="skill-item">
+              <div class="skill-header"><span>MongoDB</span><span>80%</span></div>
+              <div class="skill-bar"><div class="skill-fill" data-width="80"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-header"><span>SQLite</span><span>85%</span></div>
+              <div class="skill-bar"><div class="skill-fill" data-width="85"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-header"><span>MySQL / MariaDB</span><span>70%</span></div>
+              <div class="skill-bar"><div class="skill-fill" data-width="70"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="skill-category">
+          <h3><span class="cat-icon">🛠️</span> Outils &amp; Frameworks</h3>
+          <div class="skill-list">
+            <div class="skill-item">
+              <div class="skill-header"><span>Tkinter (GUI)</span><span>85%</span></div>
+              <div class="skill-bar"><div class="skill-fill" data-width="85"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-header"><span>Git &amp; GitHub</span><span>70%</span></div>
+              <div class="skill-bar"><div class="skill-fill" data-width="70"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-header"><span>Merise / MCD</span><span>75%</span></div>
+              <div class="skill-bar"><div class="skill-fill" data-width="75"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="skill-category">
+          <h3><span class="cat-icon">🎯</span> Soft Skills</h3>
+          <div class="tags-list">
+            <span class="tag">Rigueur</span>
+            <span class="tag">Travail en équipe</span>
+            <span class="tag">Résolution de problèmes</span>
+            <span class="tag">Autonomie</span>
+            <span class="tag">Curiosité</span>
+            <span class="tag">Adaptabilité</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Projets ────────────────────────────────────────────── -->
+  <section id="projects">
+    <div class="container">
+      <h2 class="section-title">Mes <span>Projets</span></h2>
+      <div class="projects-grid">
+
+        <article class="project-card">
+          <div class="project-header" style="--accent: #7c3aed;">
+            <img src="images/project-erp.jpg" alt="SkolManager ERP" class="project-img">
+            <div class="project-num">01</div>
+          </div>
+          <div class="project-body">
+            <h3>SkolManager ERP</h3>
+            <p>
+              Système ERP complet de gestion scolaire : inscriptions, emplois
+              du temps, paiements des frais et bulletins de notes. Architecture
+              modulaire avec tableau de bord administrateur.
+            </p>
+            <div class="project-tech">
+              <span>Python</span>
+              <span>Django</span>
+              <span>PostgreSQL</span>
+              <span>Bootstrap</span>
+            </div>
+            <div class="project-features">
+              <div class="feature">✓ Gestion inscriptions &amp; scolarités</div>
+              <div class="feature">✓ Génération automatique de bulletins</div>
+              <div class="feature">✓ Tableau de bord statistique</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-header" style="--accent: #06b6d4;">
+            <img src="images/project-resto.jpg" alt="RestauPro" class="project-img">
+            <div class="project-num">02</div>
+          </div>
+          <div class="project-body">
+            <h3>RestauPro</h3>
+            <p>
+              Application web de gestion de restaurant : commandes en salle,
+              gestion des tables, stock de cuisine et caisse enregistreuse
+              numérique. Interface tactile optimisée.
+            </p>
+            <div class="project-tech">
+              <span>Python</span>
+              <span>Django</span>
+              <span>SQLite</span>
+              <span>ReportLab</span>
+            </div>
+            <div class="project-features">
+              <div class="feature">✓ Prise de commande par table</div>
+              <div class="feature">✓ Gestion stock &amp; alertes rupture</div>
+              <div class="feature">✓ Génération de reçus PDF</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-header" style="--accent: #f59e0b;">
+            <img src="images/project-cinema.jpg" alt="CineBook" class="project-img">
+            <div class="project-num">03</div>
+          </div>
+          <div class="project-body">
+            <h3>CineBook</h3>
+            <p>
+              Plateforme web de réservation de places de cinéma en ligne :
+              sélection de séances, choix de sièges interactif, paiement
+              et envoi automatique de billets par e-mail.
+            </p>
+            <div class="project-tech">
+              <span>HTML/CSS</span>
+              <span>JavaScript</span>
+              <span>PHP</span>
+              <span>MySQL</span>
+            </div>
+            <div class="project-features">
+              <div class="feature">✓ Plan de salle interactif</div>
+              <div class="feature">✓ Réservation &amp; paiement en ligne</div>
+              <div class="feature">✓ Envoi de billets par e-mail</div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Contact ────────────────────────────────────────────── -->
+  <section id="contact">
+    <div class="container">
+      <h2 class="section-title">Me <span>Contacter</span></h2>
+      <div class="contact-wrapper">
+        <div class="contact-info">
+          <p class="contact-intro">
+            Je suis ouvert aux opportunités de stage, de collaboration ou
+            simplement à une bonne discussion sur la tech. N'hésite pas à me
+            contacter !
+          </p>
+          <div class="contact-links">
+            <a href="mailto:ananinguemnang@gmail.com" class="contact-link">
+              <span class="contact-link-icon">✉</span>
+              <div>
+                <span class="contact-link-label">Email</span>
+                <span class="contact-link-value">ananinguemnang@gmail.com</span>
+              </div>
+            </a>
+            <div class="contact-link">
+              <span class="contact-link-icon">📍</span>
+              <div>
+                <span class="contact-link-label">Localisation</span>
+                <span class="contact-link-value">Douala, Cameroun</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <form class="contact-form" id="contactForm">
+          <div class="form-group">
+            <label for="name">Nom complet</label>
+            <input type="text" id="name" placeholder="Votre nom" required />
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="votre@email.com" required />
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" rows="5" placeholder="Votre message..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">
+            Envoyer le message
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ─────────────────────────────────────────────── -->
+  <footer>
+    <div class="container">
+      <p>
+        Conçu &amp; développé par
+        <strong>NZOUPET NGUEMNANG Harry Anani</strong> · 2026
+      </p>
+      <p class="footer-sub">Étudiant en Informatique · Douala, Cameroun</p>
+    </div>
+  </footer>
+
+  <!-- ── Bouton WhatsApp flottant ─────────────────────────────── -->
+  <a href="https://wa.me/237658178838?text=Bonjour%20Harry%20Anani%2C%20j%27ai%20vu%20votre%20portfolio%20et%20je%20souhaite%20vous%20contacter."
+     class="whatsapp-float" target="_blank" rel="noopener" aria-label="Écrire sur WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor" class="wa-icon">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+    <span class="wa-tooltip">Écrire sur WhatsApp</span>
+  </a>
+
+  <script src="script.js"></script>
+</body>
+</html>

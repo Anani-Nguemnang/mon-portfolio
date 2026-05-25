@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CineBook — Réservation de places</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@500&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0d0d14;--bg2:#12121e;--bg3:#1a1a2e;--card:#16162a;
+      --border:#2a2a45;--gold:#f59e0b;--cyan:#06b6d4;--violet:#7c3aed;
+      --green:#10b981;--red:#ef4444;--text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+    /* NAV */
+    nav{background:rgba(13,13,20,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100}
+    .logo{font-size:1.3rem;font-weight:800;background:linear-gradient(90deg,var(--gold),#fcd34d);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .nav-links{display:flex;gap:1.5rem;align-items:center}
+    .nav-links a{color:var(--text2);text-decoration:none;font-size:.875rem;font-weight:500;transition:.2s}
+    .nav-links a:hover{color:var(--text)}
+    .nav-cta{background:var(--gold);color:#0d0d14;padding:.4rem 1rem;border-radius:7px;font-weight:700;font-size:.85rem;text-decoration:none;transition:.2s}
+    .nav-cta:hover{background:#fbbf24}
+    .back-btn{color:var(--text2);text-decoration:none;font-size:.82rem;border:1px solid var(--border);padding:.3rem .8rem;border-radius:6px;transition:.2s}
+    .back-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+    /* HERO du film */
+    .movie-hero{position:relative;background:linear-gradient(135deg,#1a0a2e,#0a1a2e,#0d0d14);padding:2.5rem 2rem 2rem;overflow:hidden}
+    .movie-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 70% 50%,rgba(124,58,237,.2),transparent 60%)}
+    .movie-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;gap:2.5rem;align-items:center;position:relative}
+    .poster{width:160px;height:230px;border-radius:10px;object-fit:cover;box-shadow:0 20px 50px rgba(0,0,0,.6);background:linear-gradient(135deg,#7c3aed,#06b6d4);display:flex;align-items:center;justify-content:center;font-size:4rem;flex-shrink:0}
+    .movie-info h1{font-size:2rem;font-weight:800;margin-bottom:.4rem}
+    .movie-meta{display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:.8rem}
+    .meta-tag{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);padding:3px 10px;border-radius:5px;font-size:.8rem;color:var(--text2)}
+    .meta-tag.gold{background:rgba(245,158,11,.15);border-color:rgba(245,158,11,.3);color:var(--gold)}
+    .stars{color:var(--gold);font-size:1.1rem;margin-bottom:.6rem}
+    .movie-desc{color:var(--text2);font-size:.9rem;line-height:1.6;max-width:600px}
+
+    /* Séances */
+    .section{max-width:1100px;margin:2rem auto;padding:0 2rem}
+    .section-title{font-size:1.1rem;font-weight:700;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)}
+    .seances-grid{display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:2rem}
+    .seance-btn{background:var(--card);border:2px solid var(--border);border-radius:10px;padding:.75rem 1.2rem;cursor:pointer;transition:.2s;text-align:center;min-width:110px}
+    .seance-btn:hover{border-color:var(--gold)}
+    .seance-btn.selected{border-color:var(--gold);background:rgba(245,158,11,.1)}
+    .seance-heure{font-size:1.1rem;font-weight:700;color:var(--gold)}
+    .seance-date{font-size:.75rem;color:var(--text2);margin-top:2px}
+    .seance-dispo{font-size:.7rem;color:var(--green);margin-top:3px}
+    .seance-dispo.few{color:var(--gold)}
+
+    /* Salle */
+    .salle-wrapper{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:2rem;margin-bottom:1.5rem}
+    .screen{background:linear-gradient(to bottom,rgba(245,158,11,.3),transparent);border-top:3px solid var(--gold);border-radius:3px 3px 50% 50%/3px 3px 20px 20px;text-align:center;padding:.4rem;margin-bottom:2rem;font-size:.75rem;color:var(--gold);letter-spacing:.15em;text-transform:uppercase;font-weight:600}
+    .salle-grid{display:flex;flex-direction:column;gap:.4rem;align-items:center}
+    .rangee{display:flex;gap:.4rem;align-items:center}
+    .rangee-label{width:20px;text-align:center;font-size:.7rem;color:var(--text3);font-family:'Fira Code',monospace;flex-shrink:0}
+    .siege{width:28px;height:24px;border-radius:5px 5px 3px 3px;cursor:pointer;transition:.15s;border:1px solid transparent}
+    .siege.libre{background:rgba(16,185,129,.2);border-color:rgba(16,185,129,.4)}
+    .siege.libre:hover{background:rgba(245,158,11,.4);border-color:var(--gold);transform:scale(1.15)}
+    .siege.pris{background:rgba(239,68,68,.25);border-color:rgba(239,68,68,.4);cursor:not-allowed}
+    .siege.selected{background:var(--gold);border-color:#fbbf24}
+    .siege.vip{background:rgba(124,58,237,.25);border-color:rgba(124,58,237,.5)}
+    .siege.vip.libre:hover{background:rgba(245,158,11,.5)}
+    .siege.vip.selected{background:var(--violet);border-color:#a855f7}
+
+    /* Légende */
+    .legende{display:flex;gap:1.5rem;margin-top:1rem;justify-content:center;flex-wrap:wrap}
+    .leg-item{display:flex;align-items:center;gap:.4rem;font-size:.78rem;color:var(--text2)}
+    .leg-color{width:18px;height:14px;border-radius:3px}
+
+    /* Récap */
+    .recap{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;position:sticky;top:70px}
+    .recap h3{font-size:1rem;font-weight:700;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)}
+    .recap-row{display:flex;justify-content:space-between;font-size:.875rem;margin-bottom:.5rem;color:var(--text2)}
+    .recap-row span:last-child{color:var(--text);font-weight:500}
+    .recap-total{display:flex;justify-content:space-between;font-weight:700;font-size:1rem;margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--border)}
+    .btn-reserver{width:100%;padding:.8rem;background:var(--gold);color:#0d0d14;border:none;border-radius:8px;font-weight:700;font-size:.95rem;cursor:pointer;margin-top:1rem;transition:.2s}
+    .btn-reserver:hover{background:#fbbf24;transform:translateY(-1px)}
+    .btn-reserver:disabled{background:var(--bg3);color:var(--text3);cursor:not-allowed;transform:none}
+    .siege-selected-list{margin-top:.75rem;min-height:40px}
+    .siege-tag{display:inline-block;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);color:var(--gold);padding:2px 8px;border-radius:4px;font-size:.78rem;margin:2px;font-family:'Fira Code',monospace}
+
+    /* Layout 2 cols */
+    .booking-layout{display:grid;grid-template-columns:1fr 280px;gap:1.5rem;align-items:start}
+
+    /* Films suggérés */
+    .films-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+    .film-card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;cursor:pointer;transition:.2s}
+    .film-card:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(0,0,0,.4);border-color:rgba(245,158,11,.3)}
+    .film-cover{height:120px;display:flex;align-items:center;justify-content:center;font-size:2.5rem}
+    .film-info{padding:.75rem}
+    .film-titre{font-size:.875rem;font-weight:600;margin-bottom:.25rem}
+    .film-note{color:var(--gold);font-size:.8rem}
+
+    /* Toast */
+    .toast{position:fixed;bottom:2rem;right:2rem;background:var(--green);color:#fff;padding:1rem 1.5rem;border-radius:10px;font-weight:600;font-size:.9rem;transform:translateY(100px);opacity:0;transition:.4s;z-index:999;display:flex;align-items:center;gap:.5rem}
+    .toast.show{transform:translateY(0);opacity:1}
+  </style>
+</head>
+<body>
+
+<nav>
+  <span class="logo">🎬 CineBook</span>
+  <div class="nav-links">
+    <a href="#films">Films</a>
+    <a href="#booking">Réserver</a>
+    <a href="#">Mes billets</a>
+    <a href="../index.html" class="back-btn">← Portfolio</a>
+  </div>
+</nav>
+
+<!-- Hero film -->
+<div class="movie-hero">
+  <div class="movie-inner">
+    <div class="poster">🎭</div>
+    <div class="movie-info">
+      <div class="movie-meta">
+        <span class="meta-tag gold">⭐ 8.7/10</span>
+        <span class="meta-tag">Action / Sci-Fi</span>
+        <span class="meta-tag">2h 24min</span>
+        <span class="meta-tag">VOSTFR</span>
+        <span class="meta-tag gold">🔥 À l'affiche</span>
+      </div>
+      <h1>Interstellar Remastered</h1>
+      <div class="stars">★★★★★</div>
+      <p class="movie-desc">Un voyage épique à travers les confins de l'univers pour sauver l'humanité. Christopher Nolan signe son chef-d'œuvre absolu dans cette version restaurée 4K.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Booking -->
+<div class="section" id="booking">
+  <div class="section-title">🕐 Choisissez votre séance</div>
+  <div class="seances-grid">
+    <div class="seance-btn" onclick="selectSeance(this,'14:30')">
+      <div class="seance-heure">14:30</div>
+      <div class="seance-date">Dim. 25 Mai</div>
+      <div class="seance-dispo">● 34 places</div>
+    </div>
+    <div class="seance-btn selected" onclick="selectSeance(this,'17:00')">
+      <div class="seance-heure">17:00</div>
+      <div class="seance-date">Dim. 25 Mai</div>
+      <div class="seance-dispo few">● 8 places</div>
+    </div>
+    <div class="seance-btn" onclick="selectSeance(this,'20:15')">
+      <div class="seance-heure">20:15</div>
+      <div class="seance-date">Dim. 25 Mai</div>
+      <div class="seance-dispo">● 52 places</div>
+    </div>
+    <div class="seance-btn" onclick="selectSeance(this,'10:00')">
+      <div class="seance-heure">10:00</div>
+      <div class="seance-date">Lun. 26 Mai</div>
+      <div class="seance-dispo">● 80 places</div>
+    </div>
+    <div class="seance-btn" onclick="selectSeance(this,'15:45')">
+      <div class="seance-heure">15:45</div>
+      <div class="seance-date">Lun. 26 Mai</div>
+      <div class="seance-dispo">● 61 places</div>
+    </div>
+  </div>
+
+  <div class="section-title">🪑 Choisissez vos sièges</div>
+  <div class="booking-layout">
+    <!-- Plan de salle -->
+    <div class="salle-wrapper">
+      <div class="screen">ÉCRAN</div>
+      <div class="salle-grid" id="salleGrid"></div>
+      <div class="legende">
+        <div class="leg-item"><div class="leg-color" style="background:rgba(16,185,129,.2);border:1px solid rgba(16,185,129,.4);border-radius:3px"></div> Libre</div>
+        <div class="leg-item"><div class="leg-color" style="background:var(--gold);border-radius:3px"></div> Sélectionné</div>
+        <div class="leg-item"><div class="leg-color" style="background:rgba(239,68,68,.25);border:1px solid rgba(239,68,68,.4);border-radius:3px"></div> Occupé</div>
+        <div class="leg-item"><div class="leg-color" style="background:rgba(124,58,237,.25);border:1px solid rgba(124,58,237,.5);border-radius:3px"></div> VIP</div>
+      </div>
+    </div>
+
+    <!-- Récap -->
+    <div class="recap">
+      <h3>🎟️ Ma réservation</h3>
+      <div class="recap-row"><span>Film</span><span>Interstellar</span></div>
+      <div class="recap-row"><span>Séance</span><span id="recapSeance">17:00 — 25/05</span></div>
+      <div class="recap-row"><span>Salle</span><span>Salle Prestige</span></div>
+      <div style="margin-top:.75rem;font-size:.8rem;color:var(--text2);margin-bottom:.3rem">Sièges sélectionnés :</div>
+      <div class="siege-selected-list" id="siegeList"><span style="color:var(--text3);font-size:.8rem">Aucun siège sélectionné</span></div>
+      <div class="recap-row" style="margin-top:.75rem"><span>Prix unitaire</span><span id="prixUnit">2 500 FCFA</span></div>
+      <div class="recap-total"><span>TOTAL</span><span id="totalPrix">0 FCFA</span></div>
+      <button class="btn-reserver" id="btnReserver" disabled onclick="reserver()">Réserver mes places</button>
+      <div style="margin-top:.75rem;font-size:.75rem;color:var(--text3);text-align:center">🔒 Paiement sécurisé — Billet e-mail</div>
+    </div>
+  </div>
+</div>
+
+<!-- Films à l'affiche -->
+<div class="section" id="films">
+  <div class="section-title">🍿 Autres films à l'affiche</div>
+  <div class="films-grid">
+    <div class="film-card"><div class="film-cover" style="background:linear-gradient(135deg,#1a1a2e,#2d1b69)">🦸</div><div class="film-info"><div class="film-titre">Avengers : Finale</div><div class="film-note">★★★★☆ 8.4</div></div></div>
+    <div class="film-card"><div class="film-cover" style="background:linear-gradient(135deg,#0a2040,#1a4080)">🚀</div><div class="film-info"><div class="film-titre">Dune — Partie 3</div><div class="film-note">★★★★★ 9.1</div></div></div>
+    <div class="film-card"><div class="film-cover" style="background:linear-gradient(135deg,#2d0a0a,#601515)">👹</div><div class="film-info"><div class="film-titre">The Dark Knight</div><div class="film-note">★★★★★ 9.0</div></div></div>
+    <div class="film-card"><div class="film-cover" style="background:linear-gradient(135deg,#0a2e1a,#155235)">🌿</div><div class="film-info"><div class="film-titre">Avatar 3</div><div class="film-note">★★★★☆ 7.9</div></div></div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">✅ Réservation confirmée ! Billet envoyé par e-mail.</div>
+
+<script>
+// ── Plan de salle ──────────────────────────────────────────────
+const rangees = ['A','B','C','D','E','F','G','H'];
+const siegesParRangee = 12;
+const vipRangees = ['A','B'];
+const pris = {A:[3,7],B:[5,6,10],C:[2,9,11],D:[4,7,8],E:[1,6,12],F:[3,5],G:[8,9,10],H:[2,11]};
+let selected = [];
+const PRIX = 2500;
+
+function buildSalle(){
+  const grid = document.getElementById('salleGrid');
+  grid.innerHTML = '';
+  rangees.forEach(r=>{
+    const row = document.createElement('div');
+    row.className='rangee';
+    const lbl = document.createElement('div');
+    lbl.className='rangee-label'; lbl.textContent=r;
+    row.appendChild(lbl);
+    for(let s=1;s<=siegesParRangee;s++){
+      const el=document.createElement('div');
+      const isVip=vipRangees.includes(r);
+      const isPris=(pris[r]||[]).includes(s);
+      el.className='siege '+(isVip?'vip ':'')+(isPris?'pris':'libre');
+      el.title=`${r}${s}${isVip?' (VIP)':''}`;
+      if(!isPris) el.onclick=()=>toggleSiege(el,r,s,isVip);
+      row.appendChild(el);
+    }
+    const lbl2=lbl.cloneNode(true);
+    row.appendChild(lbl2);
+    grid.appendChild(row);
+  });
+}
+
+function toggleSiege(el,r,s,isVip){
+  const id=`${r}${s}`;
+  if(selected.includes(id)){
+    selected=selected.filter(x=>x!==id);
+    el.classList.remove('selected');
+    el.classList.add('libre');
+  } else {
+    if(selected.length>=6){alert('Maximum 6 sièges par réservation.');return;}
+    selected.push(id);
+    el.classList.remove('libre');
+    el.classList.add('selected');
+  }
+  updateRecap();
+}
+
+function updateRecap(){
+  const list=document.getElementById('siegeList');
+  const total=document.getElementById('totalPrix');
+  const btn=document.getElementById('btnReserver');
+  if(selected.length===0){
+    list.innerHTML='<span style="color:var(--text3);font-size:.8rem">Aucun siège sélectionné</span>';
+    total.textContent='0 FCFA';
+    btn.disabled=true;
+  } else {
+    list.innerHTML=selected.map(s=>`<span class="siege-tag">${s}</span>`).join('');
+    total.textContent=(selected.length*PRIX).toLocaleString('fr-FR')+' FCFA';
+    btn.disabled=false;
+  }
+}
+
+function selectSeance(el,h){
+  document.querySelectorAll('.seance-btn').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('recapSeance').textContent=h+' — 25/05';
+}
+
+function reserver(){
+  const toast=document.getElementById('toast');
+  toast.classList.add('show');
+  setTimeout(()=>toast.classList.remove('show'),4000);
+  selected=[];
+  updateRecap();
+  buildSalle();
+}
+
+buildSalle();
+</script>
+</body>
+</html>

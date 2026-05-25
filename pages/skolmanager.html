@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkolManager ERP — Tableau de bord</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#0d0d14; --bg2:#12121e; --bg3:#1a1a2e; --card:#16162a;
+      --border:#2a2a45; --violet:#7c3aed; --cyan:#06b6d4; --green:#10b981;
+      --orange:#f59e0b; --red:#ef4444; --text:#e2e8f0; --text2:#94a3b8; --text3:#64748b;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh}
+
+    /* Sidebar */
+    .sidebar{width:230px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0}
+    .brand{padding:1.4rem 1.2rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.7rem}
+    .brand-icon{font-size:1.5rem}
+    .brand-name{font-size:1.05rem;font-weight:700;background:linear-gradient(90deg,var(--violet),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .nav{flex:1;padding:.8rem .6rem;display:flex;flex-direction:column;gap:.25rem}
+    .nav-item{display:flex;align-items:center;gap:.7rem;padding:.65rem .9rem;border-radius:8px;color:var(--text2);text-decoration:none;font-size:.875rem;font-weight:500;cursor:pointer;transition:.2s}
+    .nav-item:hover{background:var(--bg3);color:var(--text)}
+    .nav-item.active{background:linear-gradient(90deg,rgba(124,58,237,.25),rgba(6,182,212,.08));color:var(--text);border-left:3px solid var(--violet)}
+    .nav-icon{font-size:1rem;width:20px;text-align:center}
+    .sidebar-user{padding:1rem 1.2rem;border-top:1px solid var(--border);display:flex;align-items:center;gap:.6rem;font-size:.85rem;color:var(--text2)}
+
+    /* Main */
+    .main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+    .topbar{padding:1.1rem 2rem;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+    .topbar h1{font-size:1.2rem;font-weight:700}
+    .topbar-right{display:flex;align-items:center;gap:.8rem}
+    .topbar-badge{background:rgba(124,58,237,.15);color:var(--violet);border:1px solid rgba(124,58,237,.3);padding:4px 12px;border-radius:20px;font-size:.8rem;font-weight:600}
+    .content{padding:1.8rem 2rem;overflow-y:auto;flex:1}
+
+    /* KPI */
+    .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.1rem;margin-bottom:1.6rem}
+    .kpi{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.3rem;display:flex;align-items:center;gap:.9rem;transition:.2s}
+    .kpi:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(0,0,0,.4)}
+    .kpi-ico{font-size:1.8rem}
+    .kpi-val{font-size:1.3rem;font-weight:700}
+    .kpi-lbl{font-size:.78rem;color:var(--text2);margin-top:2px}
+    .kpi.v{border-left:3px solid var(--violet)}
+    .kpi.c{border-left:3px solid var(--cyan)}
+    .kpi.g{border-left:3px solid var(--green)}
+    .kpi.o{border-left:3px solid var(--orange)}
+
+    /* Grid layout */
+    .two-col{display:grid;grid-template-columns:2fr 1fr;gap:1.2rem;margin-bottom:1.2rem}
+
+    /* Card */
+    .card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+    .card-head{padding:.9rem 1.3rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+    .card-head h3{font-size:.95rem;font-weight:600}
+    .card-body{padding:1.2rem}
+
+    /* Table */
+    table{width:100%;border-collapse:collapse;font-size:.85rem}
+    th{background:var(--bg3);padding:.6rem 1rem;text-align:left;font-size:.75rem;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--border)}
+    td{padding:.7rem 1rem;border-bottom:1px solid rgba(42,42,69,.4);vertical-align:middle}
+    tr:last-child td{border-bottom:none}
+    tr:hover td{background:rgba(255,255,255,.015)}
+
+    /* Badge */
+    .badge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:.73rem;font-weight:600}
+    .badge-vert{background:rgba(16,185,129,.15);color:#34d399;border:1px solid rgba(16,185,129,.25)}
+    .badge-orange{background:rgba(245,158,11,.15);color:#fbbf24;border:1px solid rgba(245,158,11,.25)}
+    .badge-rouge{background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.25)}
+    .badge-cyan{background:rgba(6,182,212,.15);color:var(--cyan);border:1px solid rgba(6,182,212,.25)}
+
+    /* Mini chart bars */
+    .bar-row{display:flex;align-items:center;gap:.8rem;margin-bottom:.75rem}
+    .bar-label{width:80px;font-size:.8rem;color:var(--text2);flex-shrink:0}
+    .bar-track{flex:1;height:8px;background:var(--bg3);border-radius:4px;overflow:hidden}
+    .bar-fill{height:100%;border-radius:4px;transition:width 1s ease}
+    .bar-val{width:40px;text-align:right;font-size:.8rem;font-weight:600;color:var(--text);flex-shrink:0}
+
+    /* Liste */
+    .list-item{display:flex;align-items:center;justify-content:space-between;padding:.65rem 0;border-bottom:1px solid rgba(42,42,69,.4)}
+    .list-item:last-child{border-bottom:none}
+    .list-left{display:flex;align-items:center;gap:.7rem}
+    .avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--violet),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;color:#fff;flex-shrink:0}
+
+    /* Back button */
+    .back-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.4rem .9rem;border-radius:7px;background:transparent;border:1px solid var(--border);color:var(--text2);font-size:.82rem;text-decoration:none;transition:.2s;cursor:pointer}
+    .back-btn:hover{border-color:var(--violet);color:var(--violet)}
+
+    /* Stat circle */
+    .stat-circle{text-align:center;padding:1rem 0}
+    .big-num{font-size:3rem;font-weight:700;background:linear-gradient(135deg,var(--violet),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .big-lbl{font-size:.85rem;color:var(--text2);margin-top:4px}
+
+    /* Calendar mini */
+    .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:.5rem}
+    .cal-day{aspect-ratio:1;border-radius:5px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:.72rem;color:var(--text2)}
+    .cal-day.today{background:var(--violet);color:#fff;font-weight:700}
+    .cal-day.has-event{border:1px solid rgba(6,182,212,.4);color:var(--cyan)}
+    .cal-day.empty{background:transparent}
+  </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="brand">
+    <span class="brand-icon">🎓</span>
+    <span class="brand-name">SkolManager</span>
+  </div>
+  <nav class="nav">
+    <div class="nav-item active"><span class="nav-icon">📊</span> Tableau de bord</div>
+    <div class="nav-item"><span class="nav-icon">👨‍🎓</span> Étudiants</div>
+    <div class="nav-item"><span class="nav-icon">📝</span> Inscriptions</div>
+    <div class="nav-item"><span class="nav-icon">📚</span> Cours &amp; UE</div>
+    <div class="nav-item"><span class="nav-icon">📅</span> Emplois du temps</div>
+    <div class="nav-item"><span class="nav-icon">📊</span> Notes &amp; bulletins</div>
+    <div class="nav-item"><span class="nav-icon">💰</span> Paiements</div>
+    <div class="nav-item"><span class="nav-icon">👨‍🏫</span> Enseignants</div>
+    <div class="nav-item"><span class="nav-icon">⚙️</span> Paramètres</div>
+  </nav>
+  <div class="sidebar-user">
+    <span style="font-size:1.4rem">👨‍💼</span>
+    <div>
+      <div style="font-weight:600;color:var(--text)">Administrateur</div>
+      <div style="font-size:.75rem">Année 2024-2025</div>
+    </div>
+  </div>
+</aside>
+
+<!-- Main -->
+<main class="main">
+  <header class="topbar">
+    <div style="display:flex;align-items:center;gap:1rem">
+      <a href="../index.html" class="back-btn">← Retour au portfolio</a>
+      <h1>Tableau de bord</h1>
+    </div>
+    <div class="topbar-right">
+      <span class="topbar-badge">📅 Semestre 2 — 2024/2025</span>
+      <span style="font-family:'Fira Code',monospace;font-size:.85rem;color:var(--cyan);background:rgba(6,182,212,.1);padding:4px 12px;border-radius:6px;border:1px solid rgba(6,182,212,.2)" id="clock"></span>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- KPI -->
+    <div class="kpi-grid">
+      <div class="kpi v"><span class="kpi-ico">👨‍🎓</span><div><div class="kpi-val">1 248</div><div class="kpi-lbl">Étudiants inscrits</div></div></div>
+      <div class="kpi c"><span class="kpi-ico">📚</span><div><div class="kpi-val">42</div><div class="kpi-lbl">Cours actifs</div></div></div>
+      <div class="kpi g"><span class="kpi-ico">💰</span><div><div class="kpi-val">87 %</div><div class="kpi-lbl">Taux paiement scolarité</div></div></div>
+      <div class="kpi o"><span class="kpi-ico">📝</span><div><div class="kpi-val">15</div><div class="kpi-lbl">Bulletins en attente</div></div></div>
+    </div>
+
+    <!-- Row 1 -->
+    <div class="two-col">
+      <!-- Inscriptions récentes -->
+      <div class="card">
+        <div class="card-head">
+          <h3>Inscriptions récentes</h3>
+          <span class="badge badge-cyan">Ce mois</span>
+        </div>
+        <table>
+          <thead>
+            <tr><th>Étudiant</th><th>Filière</th><th>Niveau</th><th>Paiement</th><th>Statut</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>NKEMDIRIM Joel</strong></td><td>Génie Info</td><td>L1</td><td>150 000 F</td><td><span class="badge badge-vert">Validé</span></td></tr>
+            <tr><td><strong>ESSOMBA Marie</strong></td><td>Gestion</td><td>L2</td><td>130 000 F</td><td><span class="badge badge-vert">Validé</span></td></tr>
+            <tr><td><strong>FOUDA Pierre</strong></td><td>Génie Civil</td><td>L1</td><td>0 F</td><td><span class="badge badge-rouge">En attente</span></td></tr>
+            <tr><td><strong>MBARGA Sylvie</strong></td><td>Comptabilité</td><td>L3</td><td>150 000 F</td><td><span class="badge badge-vert">Validé</span></td></tr>
+            <tr><td><strong>ABOSSOLO Marc</strong></td><td>Génie Info</td><td>L2</td><td>75 000 F</td><td><span class="badge badge-orange">Partiel</span></td></tr>
+            <tr><td><strong>DJOMI Rachel</strong></td><td>Marketing</td><td>L1</td><td>150 000 F</td><td><span class="badge badge-vert">Validé</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Taux par filière -->
+      <div class="card">
+        <div class="card-head"><h3>Effectifs par filière</h3></div>
+        <div class="card-body">
+          <div class="bar-row"><span class="bar-label">Génie Info</span><div class="bar-track"><div class="bar-fill" style="width:85%;background:linear-gradient(90deg,#7c3aed,#06b6d4)"></div></div><span class="bar-val">312</span></div>
+          <div class="bar-row"><span class="bar-label">Gestion</span><div class="bar-track"><div class="bar-fill" style="width:70%;background:linear-gradient(90deg,#06b6d4,#10b981)"></div></div><span class="bar-val">256</span></div>
+          <div class="bar-row"><span class="bar-label">Génie Civil</span><div class="bar-track"><div class="bar-fill" style="width:55%;background:linear-gradient(90deg,#10b981,#f59e0b)"></div></div><span class="bar-val">198</span></div>
+          <div class="bar-row"><span class="bar-label">Marketing</span><div class="bar-track"><div class="bar-fill" style="width:45%;background:linear-gradient(90deg,#f59e0b,#ef4444)"></div></div><span class="bar-val">165</span></div>
+          <div class="bar-row"><span class="bar-label">Compta.</span><div class="bar-track"><div class="bar-fill" style="width:32%;background:linear-gradient(90deg,#ef4444,#7c3aed)"></div></div><span class="bar-val">317</span></div>
+
+          <div style="margin-top:1.2rem;padding-top:1rem;border-top:1px solid var(--border)">
+            <div class="stat-circle">
+              <div class="big-num">1 248</div>
+              <div class="big-lbl">Total étudiants inscrits</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="two-col">
+      <!-- Notes récentes -->
+      <div class="card">
+        <div class="card-head"><h3>Dernières notes saisies</h3><span class="badge badge-orange">15 bulletins en attente</span></div>
+        <table>
+          <thead><tr><th>UE</th><th>Classe</th><th>Enseignant</th><th>Moy. classe</th><th>Bulletins</th></tr></thead>
+          <tbody>
+            <tr><td>Algorithmique</td><td>GI-L1</td><td>Dr. ATEBA</td><td><strong style="color:var(--green)">13.4/20</strong></td><td><span class="badge badge-vert">Générés</span></td></tr>
+            <tr><td>Base de données</td><td>GI-L2</td><td>M. KAMGA</td><td><strong style="color:var(--cyan)">12.1/20</strong></td><td><span class="badge badge-vert">Générés</span></td></tr>
+            <tr><td>Analyse 1</td><td>GC-L1</td><td>Dr. NGNIÉ</td><td><strong style="color:var(--orange)">9.8/20</strong></td><td><span class="badge badge-orange">En cours</span></td></tr>
+            <tr><td>Comptabilité G.</td><td>CPT-L2</td><td>M. EBONG</td><td><strong style="color:var(--green)">14.2/20</strong></td><td><span class="badge badge-vert">Générés</span></td></tr>
+            <tr><td>Marketing Digital</td><td>MKT-L3</td><td>Mme OWONA</td><td><strong style="color:var(--red)">7.3/20</strong></td><td><span class="badge badge-rouge">En attente</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Agenda -->
+      <div class="card">
+        <div class="card-head"><h3>Agenda — Mai 2025</h3></div>
+        <div class="card-body">
+          <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:.5rem">
+            <div style="font-size:.7rem;color:var(--text3);text-align:center">Lu</div>
+            <div style="font-size:.7rem;color:var(--text3);text-align:center">Ma</div>
+            <div style="font-size:.7rem;color:var(--text3);text-align:center">Me</div>
+            <div style="font-size:.7rem;color:var(--text3);text-align:center">Je</div>
+            <div style="font-size:.7rem;color:var(--text3);text-align:center">Ve</div>
+            <div style="font-size:.7rem;color:var(--text3);text-align:center">Sa</div>
+            <div style="font-size:.7rem;color:var(--text3);text-align:center">Di</div>
+          </div>
+          <div class="cal-grid">
+            <div class="cal-day empty"></div><div class="cal-day empty"></div>
+            <div class="cal-day">1</div><div class="cal-day has-event">2</div><div class="cal-day">3</div><div class="cal-day">4</div><div class="cal-day">5</div>
+            <div class="cal-day">6</div><div class="cal-day has-event">7</div><div class="cal-day">8</div><div class="cal-day">9</div><div class="cal-day has-event">10</div><div class="cal-day">11</div><div class="cal-day">12</div>
+            <div class="cal-day">13</div><div class="cal-day">14</div><div class="cal-day">15</div><div class="cal-day has-event">16</div><div class="cal-day">17</div><div class="cal-day">18</div><div class="cal-day">19</div>
+            <div class="cal-day">20</div><div class="cal-day">21</div><div class="cal-day">22</div><div class="cal-day">23</div><div class="cal-day">24</div><div class="cal-day today">25</div><div class="cal-day">26</div>
+            <div class="cal-day has-event">27</div><div class="cal-day">28</div><div class="cal-day">29</div><div class="cal-day">30</div><div class="cal-day">31</div>
+          </div>
+          <div style="margin-top:1rem">
+            <div class="list-item"><div class="list-left"><span style="font-size:1rem">📝</span><div><div style="font-size:.85rem;font-weight:500">Examen Algo GI-L1</div><div style="font-size:.75rem;color:var(--text3)">27 Mai — Salle B204</div></div></div><span class="badge badge-rouge">Examen</span></div>
+            <div class="list-item"><div class="list-left"><span style="font-size:1rem">💰</span><div><div style="font-size:.85rem;font-weight:500">Date limite paiement</div><div style="font-size:.75rem;color:var(--text3)">31 Mai 2025</div></div></div><span class="badge badge-orange">Urgent</span></div>
+            <div class="list-item"><div class="list-left"><span style="font-size:1rem">📋</span><div><div style="font-size:.85rem;font-weight:500">Conseil de classe L2</div><div style="font-size:.75rem;color:var(--text3)">7 Juin — Salle Conf.</div></div></div><span class="badge badge-cyan">Réunion</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+  setInterval(() => {
+    document.getElementById('clock').textContent = new Date().toLocaleTimeString('fr-FR');
+  }, 1000);
+  document.getElementById('clock').textContent = new Date().toLocaleTimeString('fr-FR');
+</script>
+</body>
+</html>
